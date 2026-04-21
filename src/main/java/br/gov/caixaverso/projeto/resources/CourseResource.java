@@ -6,6 +6,7 @@ import br.gov.caixaverso.projeto.dto.CourseRequest;
 import br.gov.caixaverso.projeto.dto.CourseResponse;
 import br.gov.caixaverso.projeto.dto.LessonRequest;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -44,6 +45,7 @@ public class CourseResource {
         return Response.ok(course, MediaType.APPLICATION_JSON).build();
     }
 
+    @RolesAllowed("ADMIN")
     @POST
     @Transactional
     public Response createCourse(@Valid CourseRequest courseRequest) {
@@ -51,11 +53,11 @@ public class CourseResource {
         course.persist();
 
         return Response.created(URI.create("/courses/" + course.getId()))
-//                .header("Content-Type", MediaType.APPLICATION_JSON)
                 .entity(new CourseResponse(course.getId(), course.getName(), course.getLessons()))
                 .build();
     }
 
+    @RolesAllowed("ADMIN")
     @PUT
     @Path("/{id}")
     @Transactional
@@ -71,6 +73,7 @@ public class CourseResource {
                 MediaType.APPLICATION_JSON).build();
     }
 
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("/{id}")
     @Transactional
