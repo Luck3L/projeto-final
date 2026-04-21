@@ -39,7 +39,6 @@ public class UsuarioResource {
     @GET
     @Path("/me")
     public Response getUsuarioLogado() {
-        Log.info("asdfasf   ------------------------"+jwt.getRawToken());
         String nomeInformado = jwt.getClaim("sub");
 
         if (nomeInformado == null)
@@ -55,6 +54,6 @@ public class UsuarioResource {
                     jwt.getClaim("exp")))
                     .build();
         else
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 }
